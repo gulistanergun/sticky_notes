@@ -3,19 +3,20 @@ import MainContext from '../MainContext'
 import Draggable from 'react-draggable';
 
 
- function Note(note,number) {
+ function Note(note) {
 
   const [visible ,setVisible] = useState(false)
   const [clickable, setClickable] = useState(true) // taşırken cliklenmesin diye
   const {setMode, notes, setNotes} = useContext(MainContext)
   const [isEditing, setIsEditing] = useState(false);
   const [editedNote, setEditedNote] = useState(note.note);
+  
  
 
   const showNote = () => {
     if(clickable){
-      setVisible (!visible)       
-      
+      setVisible (!visible)    
+   
     }
   }
 
@@ -33,9 +34,12 @@ import Draggable from 'react-draggable';
   };
 
   const deleteNote = () => {
-    const updatedNotes = notes.filter(n => n.number !== note.number);
+    const updatedNotes = notes.filter(n => n.number !== note.number).map((n, index) => ({
+      ...n,
+      number: index + 1
+    }));
     setNotes(updatedNotes);
-    localStorage.setItem('notes', JSON.stringify(updatedNotes)); // Güncelle
+    localStorage.setItem('notes', JSON.stringify(updatedNotes));
   };
   
   
